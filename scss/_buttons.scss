@@ -1,0 +1,104 @@
+// General button polish
+.btn {
+  border-radius: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 0.02rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  &:hover {
+    transform: translateY(-2px);
+  }
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, $primary 0%, darken($primary, 10%) 100%);
+  border: none;
+  box-shadow: 0 0.15rem 0.5rem 0 rgba($primary, .35);
+  &:hover, &:focus {
+    background: linear-gradient(135deg, darken($primary, 5%) 0%, darken($primary, 15%) 100%);
+    box-shadow: 0 0.35rem 0.9rem 0 rgba($primary, .45);
+  }
+}
+
+// Gold accent button variant
+.btn-gold {
+  background: linear-gradient(135deg, $gold-light 0%, $gold 100%);
+  border: none;
+  color: #4a3b0a;
+  box-shadow: 0 0.15rem 0.5rem 0 rgba($gold, .4);
+  &:hover, &:focus {
+    background: linear-gradient(135deg, $gold 0%, darken($gold, 10%) 100%);
+    color: #3a2e08;
+    box-shadow: 0 0.35rem 0.9rem 0 rgba($gold, .5);
+  }
+}
+
+// Inputs polish
+.form-control {
+  border-radius: 0.5rem;
+  border-color: $gray-300;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  &:focus {
+    border-color: $gold;
+    box-shadow: 0 0 0 0.2rem rgba($gold, .25);
+  }
+}
+
+.input-group .btn-primary {
+  box-shadow: none;
+}
+
+.btn-circle {
+  border-radius: 100%;
+  height: 2.5rem;
+  width: 2.5rem;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  &.btn-sm {
+    height: 1.8rem;
+    width: 1.8rem;
+    font-size: 0.75rem;
+  }
+  &.btn-lg {
+    height: 3.5rem;
+    width: 3.5rem;
+    font-size: 1.35rem;
+  }
+}
+
+.btn-icon-split {
+  padding: 0;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: stretch;
+  justify-content: center;
+  .icon {
+    background: fade-out($black, .85);
+    display: inline-block;
+    padding: $btn-padding-y $btn-padding-x;
+  }
+  .text {
+    display: inline-block;
+    padding: $btn-padding-y $btn-padding-x;
+  }
+  &.btn-sm {
+    .icon {
+      padding: $btn-padding-y-sm $btn-padding-x-sm;
+    }
+    .text {
+      padding: $btn-padding-y-sm $btn-padding-x-sm;
+    }
+  }
+  &.btn-lg {
+    .icon {
+      padding: $btn-padding-y-lg $btn-padding-x-lg;
+    }
+    .text {
+      padding: $btn-padding-y-lg $btn-padding-x-lg;
+    }
+  }
+}
