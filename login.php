@@ -2,30 +2,40 @@
 session_start();
 include 'db.php';
 
-if(isset($_POST['login'])){
+$message = "";
+$message_type = "";
+
+if(isset($_POST['email'])){
 
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $sql = "SELECT * FROM users WHERE email='$email' AND password='$password'";
+    $sql = "SELECT * FROM users WHERE email='$email'";
     $result = $conn->query($sql);
 
     if($result->num_rows > 0){
 
-        $row = $result->fetch_assoc();
+        $user = $result->fetch_assoc();
 
-        $_SESSION['username'] = $row['username'];
-        $_SESSION['email'] = $row['email'];
+        if(password_verify($password, $user['password'])){
 
-        header("Location: index.php");
-        exit();
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['username'] = $user['username'];
+
+            header("Location: index.php");
+            exit();
+
+        }else{
+            $message = "Wrong Password";
+            $message_type = "danger";
+        }
 
     }else{
-        $error = "Email or Password is incorrect";
+        $message = "Email not found";
+        $message_type = "danger";
     }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -49,10 +59,27 @@ if(isset($_POST['login'])){
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
+    <style>
+.card{
+    border-radius:20px;
+}
+
+.btn-user{
+    border-radius:30px;
+}
+
+.form-control-user{
+    border-radius:30px;
+}
+
+.alert{
+    border-radius:15px;
+}
+</style>
+
 </head>
 
-<body class="bg-gradient-primary">
-
+<body class="bg-gradient-dark">
     <div class="container">
 
         <!-- Outer Row -->
@@ -68,7 +95,7 @@ if(isset($_POST['login'])){
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Welcome to Nova Admin</h1>
                                     </div>
 
                                     <?php
@@ -78,7 +105,13 @@ if(isset($_POST['login'])){
                                         
                                     ?>
 
-                                    <form class="user" method="POST">
+                                    <?php if($message != "") { ?>
+                                     <div class="alert alert-<?php echo $message_type; ?>">
+                                   <?php echo $message; ?>
+                                   </div>
+                                   <?php } ?>
+
+                                    <form class="user" method="POST" action="">
                                         <div class="form-group">
                                             <input type="email"  name="email"  class="form-control form-control-user"
                                                 id="exampleInputEmail" aria-describedby="emailHelp"
@@ -95,7 +128,7 @@ if(isset($_POST['login'])){
                                                     Me</label>
                                             </div>
                                         </div>
-                                        <button type="submit" name="login" class="btn btn-primary btn-user btn-block"> 
+                                        <button type="submit" name="login" class="btn btn-success btn-user btn-block"> 
                                             Login
                                         </button>
                                         <hr>

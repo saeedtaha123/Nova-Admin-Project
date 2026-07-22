@@ -1,20 +1,33 @@
 <?php
 include 'db.php';
+$message = "";
+$message_type = "";
 
 if(isset($_POST['username'])){
 
     $username = $_POST['username'];
     $email    = $_POST['email'];
     $password = $_POST['password'];
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+    $repeat_password = $_POST['repeat_password'];
+
+
+   if ($password != $repeat_password) {
+    $message = "Passwords do not match.";
+    $message_type = "danger";
+} else {
 
     $sql = "INSERT INTO users(username,email,password)
-            VALUES('$username','$email','$password')";
+            VALUES('$username','$email','$hashed_password')";
 
     if($conn->query($sql)){
-        echo "Registered Successfully";
-    }else{
-        echo "Error: " . $conn->error;
-    }
+    $message = "Registration completed successfully.";
+    $message_type = "success";
+}else{
+    $message = "Registration failed.";
+    $message_type = "danger";
+}
+}
 }
 ?>
 
@@ -40,10 +53,27 @@ if(isset($_POST['username'])){
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
+    <style>
+.card{
+    border-radius:20px;
+}
+
+.btn-user{
+    border-radius:30px;
+}
+
+.form-control-user{
+    border-radius:30px;
+}
+
+.alert{
+    border-radius:15px;
+}
+</style>
+
 </head>
 
-<body class="bg-gradient-primary">
-
+<body class="bg-gradient-dark">
     <div class="container">
 
         <div class="card o-hidden border-0 shadow-lg my-5">
@@ -54,8 +84,14 @@ if(isset($_POST['username'])){
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
-                            </div>
+                                <h1 class="h4 text-gray-900 mb-4">Create Your Nova Admin Account</h1>
+                             </div>
+                            <?php if($message != "") { ?>
+                            <div class="alert alert-<?php echo $message_type; ?>">
+                            <?php echo $message; ?>
+                                </div>
+                               <?php } ?>
+
                             <form class="user" method="POST" action="">
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
@@ -77,11 +113,11 @@ if(isset($_POST['username'])){
                                             id="exampleInputPassword" name="password" placeholder="Password">
                                     </div>
                                     <div class="col-sm-6">
-                                        <input type="password" class="form-control form-control-user"
+                                        <input type="password" class="form-control form-control-user" name="repeat_password"
                                             id="exampleRepeatPassword" placeholder="Repeat Password">
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary btn-user btn-block">
+                                <button type="submit" class="btn btn-success btn-user btn-block">
                                     Register Account
                                 </button>
                             
